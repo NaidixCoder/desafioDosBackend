@@ -4,14 +4,14 @@ class ProductManager {
     
     constructor(path) {
         this.products = [];
-        this.path = path
+        this.path = path;
     }
 
     async addProduct(title, description, price, thumbnail, stock, code) {
 
         if (this.validateInputs(title, description, price, thumbnail, stock, code)) {
             return;
-        }
+        };
 
         const product = {
             id: this.#getID(),
@@ -75,6 +75,14 @@ class ProductManager {
             const index = this.products.findIndex(product => product.id === productId);
     
             if (index !== -1) {
+                const { code: newCode } = updatedData;
+                
+                // Validación del nuevo código
+                if (this.products.some(prod => prod.code === newCode)) {
+                    console.error(`Error: Ya existe un producto con el código: "${newCode}"`);
+                    return;
+                }
+    
                 this.products[index] = {
                     ...this.products[index],
                     ...updatedData,
@@ -91,7 +99,7 @@ class ProductManager {
         }
     }
     
-
+    
     async writeProductsJson(product) {
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, '\t'));

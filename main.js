@@ -41,6 +41,7 @@ async function changeProduct(){
         price: 1500,
         thumbnail: "new/path",
         stock: 20,
+        code: "codigo-4",
     });
 }
 
